@@ -1,98 +1,181 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import React from 'react';
+import {
+  Alert,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const xemThongTin = () => {
+    Alert.alert(
+      'Thông tin sinh viên',
+      'Họ và tên: Bùi Anh Kiên\n' +
+      'Mã sinh viên: 23103034\n' +
+      'Ngành học: Công nghệ thông tin'
+    );
+  };
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  return (
+    <View style={styles.container}>
+
+      {/* Thẻ thông tin sinh viên */}
+      <View style={styles.card}>
+
+        {/* Ảnh đại diện */}
+        <Image
+          source={require('@/assets/images/icon.png')}
+          style={styles.avatar}
+        />
+
+        {/* Họ và tên */}
+        <Text style={styles.name}>
+          Bùi Anh Kiên
+        </Text>
+
+        {/* Mã sinh viên */}
+        <View style={styles.infoRow}>
+          <Text style={styles.icon}>🆔</Text>
+
+          <Text style={styles.label}>
+            Mã sinh viên:
+          </Text>
+
+          <Text style={styles.value}>
+            23103034
+          </Text>
+        </View>
+
+        {/* Ngành học */}
+        <View style={styles.infoRow}>
+          <Text style={styles.icon}>🎓</Text>
+
+          <Text style={styles.label}>
+            Ngành học:
+          </Text>
+
+          <Text style={styles.value}>
+            Công nghệ thông tin
+          </Text>
+        </View>
+
+        {/* Nút xem thông tin */}
+        <Pressable
+          style={({ pressed }) => [
+            styles.button,
+            pressed && styles.buttonPressed,
+          ]}
+          onPress={xemThongTin}
+        >
+          <Text style={styles.buttonText}>
+            Xem thông tin
+          </Text>
+        </Pressable>
+
+      </View>
+
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+
+  // Màn hình chính
+  container: {
+    flex: 1,
+    backgroundColor: '#eef4fb',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+
+  // Thẻ sinh viên
+  card: {
+    width: '90%',
+    backgroundColor: '#ffffff',
+    borderRadius: 20,
+    padding: 25,
+    alignItems: 'center',
+
+    // Bóng trên Android
+    elevation: 8,
+
+    // Bóng trên iOS
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+  },
+
+  // Ảnh đại diện
+  avatar: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    marginBottom: 15,
+  },
+
+  // Tên sinh viên
+  name: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#111111',
+    marginBottom: 25,
+  },
+
+  // Một dòng thông tin
+  infoRow: {
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    marginBottom: 15,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+
+  // Icon
+  icon: {
+    fontSize: 18,
+    marginRight: 7,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+
+  // Tên trường
+  label: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#333333',
+    marginRight: 5,
+  },
+
+  // Nội dung
+  value: {
+    fontSize: 14,
+    color: '#444444',
+    flex: 1,
+  },
+
+  // Nút
+  button: {
+    width: '100%',
+    backgroundColor: '#1261c9',
+    paddingVertical: 15,
+    borderRadius: 30,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+
+  // Hiệu ứng khi nhấn
+  buttonPressed: {
+    opacity: 0.7,
+  },
+
+  // Chữ nút
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
